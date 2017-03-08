@@ -1,8 +1,8 @@
-# Undesrtanding BEDTools `reldist`
+# Understanding BEDTools `reldist`
 
 I very often use BEDTools [`reldist`](http://bedtools.readthedocs.io/en/latest/content/tools/reldist.html) to measure the co-occurrance of two lists of genomic features relative to the random expectation.
 
-For instance, given 2 BED files (`a.bed` and `b.bed`):
+For instance, given the 2 BED files in the `data` folder (`a.bed` and `b.bed`):
 ```
 bedtools reldist -a data/a.bed -b data/b.bed
 ```
@@ -16,12 +16,12 @@ reldist	count	total	fraction
 0.03	30	774	0.039
 0.04	21	774	0.027
 ```
-- reldist = 0.01-bins of the [relative distance](http://bedtools.readthedocs.io/en/latest/content/tools/reldist.html) metric (i.e. expetc 50 non-header rows in the output file)
+- reldist = 0.01-bins of the [relative distance](http://bedtools.readthedocs.io/en/latest/content/tools/reldist.html) metric (i.e. expect 50 non-header rows in the output file)
 - count = number of features in `a.bed` in a given reldist bin
 - total = total number of features in `a.bed`
 - fraction = count / total
 
-And here is where things did not make sense, as I knew `a.bed` contained 788 genomic features:
+And here is where things did not make sense *a priori*, as I knew `a.bed` contained 788 genomic features:
 ```
 wc -l data/a.bed
 ```
@@ -51,7 +51,3 @@ The cartoon below illustrates what is happening:
 
 Using A1 as an example, the relative distance metric is calculated as the minimum distance between A1 and the closest B feature (i) upstream and (ii) downstream, that is, B2 and B3, respectively, divided by the distance between B2 and B3. It seems clear now that such a metric cannot be calculated by definition for features A2, A3 and A4 as there are not more B features downstream. Nonetheless, the fraction of features in `a.bed` with missing relative distance values is very small anyway (14/788 or <2%).
 
-
-
-
-calculating the relative distance metric needs to B elements
